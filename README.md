@@ -12,4 +12,3 @@ Methodology:
 Random forest analysis will be used for the project since the dataset requires both classification and regression tasks. A SQL database will be hosted on an AWS virtual environment. Any visualizations of the data will be done using Tableau.
 
 This project was derived from a Kaggle competition: https://www.kaggle.com/c/house-prices-advanced-regression-techniques/overview
-![image](https://user-images.githubusercontent.com/77289566/123571736-db595e00-d798-11eb-873c-26d265292202.png)
