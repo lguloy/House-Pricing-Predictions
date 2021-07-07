@@ -4,6 +4,7 @@ from flask import (
     jsonify,
     request,
     redirect)
+import model
 
 
 #################################################
@@ -36,7 +37,8 @@ def send():
                        "MoSold": request.form["MoSold"]
             
             }
-        return render_template("index.html", prices=prices)
+        predicted_price = model.run_model(model_input)
+        return render_template("index.html", prices=predicted_price)
     
     return render_template("dummy.html")
 
