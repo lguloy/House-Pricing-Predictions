@@ -12,7 +12,7 @@ def run_model(dictionary):
     df = pd.DataFrame(data=dictionary, index=range(1))
     
     #USE VSC_MODEL
-    sale_price = f'$ {VSC_model.predict(df)[0]}'
+    sale_price = VSC_model.predict(df)[0]
     
     return sale_price
     

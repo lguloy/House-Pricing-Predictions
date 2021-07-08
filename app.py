@@ -5,6 +5,8 @@ from flask import (
     request,
     redirect)
 import model
+import os
+from tables import create_classes
 
 
 #################################################
@@ -16,6 +18,13 @@ app = Flask(__name__)
 #################################################
 # Flask Routes
 #################################################
+from flask_sqlalchemy import SQLAlchemy
+
+## CREATE CONNECTION ##
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:House2021@housingpriceprediction.cxgg7v5earry.us-east-2.rds.amazonaws.com:5432/postgres'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+Features = create_classes(db)
 
 @app.route("/")
 def home():
@@ -37,7 +46,24 @@ def send():
                        "MoSold": request.form["MoSold"]
             
             }
-        predicted_price = model.run_model(model_input)
+        
+        price= model.run_model(model_input)
+        predicted_price = f'$ {price}'
+        
+        features = Features(firstflrsf=model_input["1stFlrSF"], \
+                            grlivarea=model_input["GrLivArea"], \
+                            lotarea=model_input["LotArea"], \
+                            garagearea=model_input["GarageArea"], \
+                           bsmtunfsf=model_input["BsmtUnfSF"], \
+                            totalbsmtsf=model_input["TotalBsmtSF"], \
+                            lotfrontage=model_input["LotFrontage"], \
+                            garageyrblt=model_input["GarageYrBlt"], \
+                            mosol=model_input["MoSold"], \
+                            yearbuilt=model_input["Year Built"], \
+                            saleprice=str(price) )
+        db.session.add(features)
+        db.session.commit()
+        
         return render_template("index.html", prices=predicted_price)
     
     return render_template("dummy.html")
